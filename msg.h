@@ -1,3 +1,8 @@
+#ifndef _VDHT_MSG_H_
+#define _VDHT_MSG_H_
+#include "ip.h"
+#include "node.h"
+
 typedef struct {
 	unsigned char type;	//join, leave, etc
 }msgheader;
@@ -19,3 +24,4 @@ typedef struct {
 	IpAddr succIp;
 	Id succId;
 }msg_join_resp;
+#endif
