@@ -1,4 +1,3 @@
-
 typedef struct {
 	unsigned char type;	//join, leave, etc
 }msgheader;
