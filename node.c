@@ -3,25 +3,26 @@
 
 void getBootstrapNodeIp(IpAddr& bootIp)
 {
-	ipaddr_set(bootIp, 192, 168, 8, 1);
+				ipaddr_set(bootIp, 192, 168, 8, 1);
 }
 
-
-void join(Node& n)
+void join(Node* n)
 {
-	//get bootstrap node address
-	IpAddr bootIp;
-	getBootstrapNodeIp(&bootIp);
+				//get bootstrap node address
+				IpAddr bootIp;
+				getBootstrapNodeIp(&bootIp);
 
-	//send join msg to bootstrap node
-	msgheader* h = (msgheader*)malloc(sizeof(msgheader));
-	h->type = MT_JOINREQ;
-	h->srcIp = n->ip;
-	h->srcId = n->id;
+				//send join msg to bootstrap node
+				msgheader* h = (msgheader*)malloc(sizeof(msgheader));
+				h->type = MT_JOINREQ;
+				//h->srcIp = n->ip;
+				//h->srcId = n->id;
 
-	msg_join_req m;
-	m.h = &h;
-	send_join_req(&m, &bootIp);
+				msg_join_req m;
+				m.h = &h;
+				m.fwdId = n->id;
+				m.fwdIp = n->ip;
+				send_join_req(&m, &bootIp);	//mmm:right? temp var?
 }
 
 void leave()
@@ -31,16 +32,63 @@ void leave()
 //send messages
 void send_join_req(Node* n, msg_join_req* m, IpAddr* ip)
 {
-	
+
 }
 
 //on receiving messages
 void on_receive_join_resp(Node* n, msg_join_resp* m)
 {
-	//get join response
-	/* if destId not id */
-	n->succId = m->succId;
-	n->succIp = m->succIp;
+				//get join response
+				/* if destId not id */
+				n->succId = m->succId;
+				n->succIp = m->succIp;
 
-	//update successor
+				//update successor
+}
+
+void on_receive_join_req(Node* n, msg_join_req* m)
+{
+				msgheader* _h;
+				msg_join_resp* _m;
+				if(m->fwdId == m->srcId)	{
+								//sent from joining node
+								m->fwdId = n->id;
+								m->fwdIp = n->ip;
+								//mmm:toimpl
+								//forward join
+
+				}
+				else	{
+								//forwarded
+								if(m->fwdId>m->srcId)	{
+												m->fwdId = n->id;
+												m->fwdIp = n->ip;
+												//mmm:toimpl--forward
+								}
+								else	{
+												//fwdId < srcId
+												if(n->id < m->srcId)	{
+																m->fwdId = n->id;
+																m->fwdIp = n->ip;
+												}
+												else	if(n->id > m->srcId){
+																_h = (msgheader*)malloc(sizeof(msgheader));
+																_h->type = MT_JOINRESP;
+																_m = (msg_join_resp*)malloc(sizeof(msg_join_resp));
+																_m->succId = n->id;
+																_m->succIp = n->ip;
+												}
+												else	{
+																printf("dup hash values!\n");
+												}
+												//mmm:toimpl forward
+
+
+
+								}
+
+
+				}
+
+
 }
