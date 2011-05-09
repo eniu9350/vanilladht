@@ -24,4 +24,17 @@ typedef struct {
 	IpAddr succIp;
 	Id succId;
 }msg_join_resp;
+
+typedef struct {
+		msgheader* h;
+		IpAddr srcIp;
+		Id srcId;
+}msg_leave_req;
+
+typedef struct {
+		msgheader* h;
+		IpAddr srcIp;
+		Id srcId;
+}msg_leave_resp;
+
 #endif

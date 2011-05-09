@@ -1,1 +1,6 @@
-implementation of send() and receive()
+* add two msgs:
+(a) getYourSucc
+(b) getMySucc --- indeed the join_req msg
+
+
+* implementation of send() and receive()
