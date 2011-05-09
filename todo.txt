@@ -1,6 +1,7 @@
 * add two msgs:
 (a) getYourSucc
 (b) getMySucc --- indeed the join_req msg
+//tips: this was to realize common func in separate message, like chord's implementation of "find successor"
 
 
 * implementation of send() and receive()
