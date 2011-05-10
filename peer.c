@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "ip.h"
 #include "node.h"
 #include "msg.h"
@@ -60,7 +62,7 @@ void send_leave_req(Node* n, msg_join_req* m, IpAddr* ip)
 }
 
 //send messages
-void fwd_leave_req(n, _m, &n->succIp)
+void fwd_leave_req(Node* n, msg_join_req* m, IpAddr* ip)
 {
 
 }
@@ -134,7 +136,7 @@ void on_receive_leave_req(Node* n, msg_leave_req* m)
 				//n->succId = 	//get succ's succ
 
 				//send leave message
-				msg_leave_resp* _m = (msg_join_resp*)malloc(sizeof(msg_join_resp));
+				msg_leave_resp* _m = (msg_leave_resp*)malloc(sizeof(msg_leave_resp));
 				_m->h = _h;
 				_m->srcId = n->id;
 				_m->srcIp = n->ip;
@@ -149,5 +151,5 @@ void on_receive_leave_resp(Node* n, msg_leave_resp* m)
 {
 		//validate src(may it be its pred's pred?)
 		//can't validate!!
-		printf("node %d exit exit successfully\n");
+		printf("node %d exit exit successfully\n", n->id);
 }

@@ -9,6 +9,8 @@ typedef struct {
 
 #define MT_JOINREQ 0;
 #define MT_JOINRESP 1;
+#define MT_LEAVEREQ 2;
+
 
 
 typedef struct {
