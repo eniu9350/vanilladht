@@ -7,10 +7,10 @@
 typedef int Id;
 
 typedef struct	{
-	IpAddr ip;
+	SockAddr addr;
 	Id id;
 
-	IpAddr succIp;
+	SockAddr succAddr;
 	Id succId;
 
 }Node;

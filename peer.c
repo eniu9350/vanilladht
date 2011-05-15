@@ -2,7 +2,7 @@
 
 #include "peer.h"
 
-void getBootstrapNodeIp(IpAddr* bootIp)
+void getBootstrapNodeIp(SockAddr* bootIp)
 {
 		ipaddr_set(bootIp, 192, 168, 8, 1);
 }
@@ -10,7 +10,7 @@ void getBootstrapNodeIp(IpAddr* bootIp)
 void join(Node* n)
 {
 		//get bootstrap node address
-		IpAddr bootIp;
+		SockAddr bootIp;
 		getBootstrapNodeIp(&bootIp);
 
 		//send join msg to bootstrap node
@@ -22,7 +22,7 @@ void join(Node* n)
 		msg_join_req m;
 		m.h = h;
 		m.fwdId = n->id;
-		m.fwdIp = n->ip;
+		m.fwdAddr = n->addr;
 		send_join_req(n, &m, &bootIp);	//mmm:right? temp var?
 }
 
@@ -30,42 +30,42 @@ void leave(Node* n)
 {
 		msg_leave_req m;
 		m.srcId = n->id;
-		m.srcIp = n->ip;	
-		send_leave_req(n, &m, &n->succIp);
+		m.srcAddr = n->addr;	
+		send_leave_req(n, &m, &n->succAddr);
 }
 
 //send messages
-void send_join_req(Node* n, msg_join_req* m, IpAddr* ip)
+void send_join_req(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void fwd_join_req(Node* n, msg_join_req* m, IpAddr* ip)
+void fwd_join_req(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void send_join_resp(Node* n, msg_join_req* m, IpAddr* ip)
+void send_join_resp(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void send_leave_req(Node* n, msg_join_req* m, IpAddr* ip)
+void send_leave_req(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void fwd_leave_req(Node* n, msg_join_req* m, IpAddr* ip)
+void fwd_leave_req(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void send_leave_resp(Node* n, msg_join_req* m, IpAddr* ip)
+void send_leave_resp(Node* n, msg_join_req* m, SockAddr* ip)
 {
 
 }
@@ -76,7 +76,7 @@ void on_receive_join_resp(Node* n, msg_join_resp* m)
 		//get join response
 		/* if destId not id */
 		n->succId = m->succId;
-		n->succIp = m->succIp;
+		n->succAddr = m->succAddr;
 
 		//update successor
 }
@@ -88,7 +88,7 @@ void on_receive_join_req(Node* n, msg_join_req* m)
 		if(m->fwdId == m->srcId)	{
 				//sent from joining node
 				m->fwdId = n->id;
-				m->fwdIp = n->ip;
+				m->fwdAddr = n->addr;
 				//mmm:toimpl
 				//forward join
 
@@ -97,22 +97,22 @@ void on_receive_join_req(Node* n, msg_join_req* m)
 				//forwarded
 				if(m->fwdId>m->srcId)	{
 						m->fwdId = n->id;
-						m->fwdIp = n->ip;
+						m->fwdAddr = n->addr;
 						//mmm:toimpl--forward
 				}
 				else	{
 						//fwdId < srcId
 						if(n->id < m->srcId)	{
 								m->fwdId = n->id;
-								m->fwdIp = n->ip;
+								m->fwdAddr = n->addr;
 						}
 						else	if(n->id > m->srcId){
 								_h = (msgheader*)malloc(sizeof(msgheader));
 								_h->type = MT_JOINRESP;
 								_m = (msg_join_resp*)malloc(sizeof(msg_join_resp));
 								_m->succId = n->id;
-								_m->succIp = n->ip;
-								send_join_resp(n, _m, &m->srcIp);
+								_m->succAddr = n->addr;
+								send_join_resp(n, _m, &m->srcAddr);
 								//mmm:toimpl send
 						}
 						else	{
@@ -136,11 +136,11 @@ void on_receive_leave_req(Node* n, msg_leave_req* m)
 				msg_leave_resp* _m = (msg_leave_resp*)malloc(sizeof(msg_leave_resp));
 				_m->h = _h;
 				_m->srcId = n->id;
-				_m->srcIp = n->ip;
-				send_leave_resp(n, _m, &m->srcIp);
+				_m->srcAddr = n->addr;
+				send_leave_resp(n, _m, &m->srcAddr);
 		}
 		else	{
-				fwd_leave_req(n, _m, &n->succIp);
+				fwd_leave_req(n, _m, &n->succAddr);
 		}
 }
 

@@ -2,12 +2,17 @@
 #define _VDHT_IP_H_
 
 typedef struct {
-        unsigned char a;
-        unsigned char b;
-        unsigned char c;
-        unsigned char d;
+				unsigned char a;
+				unsigned char b;
+				unsigned char c;
+				unsigned char d;
 }IpAddr;
 
-void ipaddr_set(IpAddr* ip, unsigned char a, unsigned char b, unsigned char c, unsigned char d);
+typedef struct {
+				IpAddr ip;
+				int port;
+}SockAddr;
+
+void ipaddr_set(SockAddr* addr, unsigned char a, unsigned char b, unsigned char c, unsigned char d);
 
 #endif

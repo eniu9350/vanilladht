@@ -15,27 +15,27 @@ typedef struct {
 
 typedef struct {
 	msgheader* h;
-	IpAddr srcIp;
+	SockAddr srcAddr;
 	Id srcId;
-	IpAddr fwdIp;
+	SockAddr fwdAddr;
 	Id fwdId;
 }msg_join_req;
 
 typedef struct {
 	msgheader* h;
-	IpAddr succIp;
+	SockAddr succAddr;
 	Id succId;
 }msg_join_resp;
 
 typedef struct {
 		msgheader* h;
-		IpAddr srcIp;
+		SockAddr srcAddr;
 		Id srcId;
 }msg_leave_req;
 
 typedef struct {
 		msgheader* h;
-		IpAddr srcIp;
+		SockAddr srcAddr;
 		Id srcId;
 }msg_leave_resp;
 
