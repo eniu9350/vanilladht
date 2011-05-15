@@ -4,7 +4,7 @@
 #include "node.h"
 #include "msg.h"
 
-void getBootstrapNodeIp(IpAddr& bootIp);
+void getBootstrapNodeIp(IpAddr* bootIp);
 void join(Node* n);
 void leave(Node* n);
 

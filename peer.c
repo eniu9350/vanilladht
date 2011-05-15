@@ -1,8 +1,5 @@
 #include <stdlib.h>
 
-#include "ip.h"
-#include "node.h"
-#include "msg.h"
 #include "peer.h"
 
 void getBootstrapNodeIp(IpAddr* bootIp)
