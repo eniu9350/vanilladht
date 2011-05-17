@@ -13,6 +13,7 @@ typedef struct {
 				int port;
 }SockAddr;
 
-void ipaddr_set(SockAddr* addr, unsigned char a, unsigned char b, unsigned char c, unsigned char d);
-
+bool ipaddr_cmp(IpAddr* ip1, IpAddr* ip2);
+void ipaddr_set(SockAddr* addr, unsigned char a, unsigned char b, unsigned char c, unsigned char d, int port);
+void ipaddr_str(SockAddr* sa, char* s);
 #endif
