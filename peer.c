@@ -11,19 +11,24 @@ void getBootstrapNodeIp(SockAddr* bootIp)
 void boot(Node* n)
 {
 				//listen for connections
-				sw_listen(&n->addr);
+				printf("1\n");
+				printf("2\n");
 
 				//get bootstrap node address
 				SockAddr bootAddr;
 				getBootstrapNodeIp(&bootAddr);
-				if(ipaddr_cmp(&bootAddr.ip, &n->addr.ip)==true && bootAddr.port == n->addr.port)	{
+				if(ipaddr_cmp(&bootAddr.ip, &n->addr.ip)==1 && bootAddr.port == n->addr.port)	{
+								printf("cmp true, boot = this\n");
+				sw_listen(&n->addr);
 								;
 				}
 				else	{
 								//connect and save socket fd
 								//n->bsSfd = sw_conn(bootAddr);
+				//sw_listen(&n->addr);	//mmm:uncomment it! 
 								n->bootAddr = bootAddr;
 
+								printf("before join\n");
 								join(n);
 				}
 }
@@ -70,7 +75,7 @@ void fwd_join_req(Node* n, msg_join_req* m, SockAddr* ip)
 }
 
 //send messages
-void send_join_resp(Node* n, msg_join_req* m, SockAddr* ip)
+void send_join_resp(Node* n, msg_join_resp* m, SockAddr* ip)
 {
 ;
 
@@ -89,7 +94,7 @@ void fwd_leave_req(Node* n, msg_leave_req* m, SockAddr* ip)
 }
 
 //send messages
-void send_leave_resp(Node* n, msg_join_req* m, SockAddr* ip)
+void send_leave_resp(Node* n, msg_leave_resp* m, SockAddr* ip)
 {
 
 }

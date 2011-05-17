@@ -14,6 +14,7 @@ int main()
 
 	n.addr = sa;
 
+	printf("client before boot\n");
 	boot(&n);
 }
 

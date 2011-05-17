@@ -28,6 +28,7 @@ int sw_listen(SockAddr* sa)
 				}
 
 				//bind
+				printf("bind\n");
 				bzero((char*)&srvaddr, sizeof(srvaddr));
 				srvaddr.sin_family = AF_INET;
 				srvaddr.sin_addr.s_addr = INADDR_ANY;
@@ -37,13 +38,16 @@ int sw_listen(SockAddr* sa)
 				}
 
 				//listen
+				printf("listen\n");
 				listen(initsock, 5);
 				printf("listening...\n");
 
 				//accept
 				buffer = (char*)malloc(1024);
 				while(1)	{
+				printf("before accept\n");
 								accsock = accept(initsock, (struct sockaddr*)&cliaddr, &clilen);
+				printf("accept accept\n");
 								if(accsock<0)	{
 									printf("sw_listen accept error\n");
 								}

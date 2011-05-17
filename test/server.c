@@ -13,6 +13,8 @@ int main()
 
 	n.addr = sa;
 
+	printf("server before boot\n");
+
 	boot(&n);
 }
 

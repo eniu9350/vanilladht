@@ -1,3 +1,6 @@
+#ifndef _VDHT_PEER_H_
+#define _VDHT_PEER_H_
+
 #include <stdio.h>
 
 #include "ip.h"
@@ -21,3 +24,4 @@ void send_leave_resp(Node* n, msg_leave_resp* m, SockAddr* ip);
 
 void on_receive_join_resp(Node* n, msg_join_resp* m);
 void on_receive_join_req(Node* n, msg_join_req* m);
+#endif
