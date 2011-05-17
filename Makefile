@@ -1,5 +1,5 @@
 all:
-	g++ -c ip.c msg.c peer.c node.c
+	g++ -c ip.c msg.c peer.c sockwrap.c node.c
 
 clean:
 	rm *.o

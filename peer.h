@@ -5,6 +5,7 @@
 #include "msg.h"
 
 void getBootstrapNodeIp(SockAddr* bootIp);
+void boot(Node* n);
 void join(Node* n);
 void leave(Node* n);
 

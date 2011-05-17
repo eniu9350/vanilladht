@@ -3,6 +3,7 @@
 #include "ip.h"
 #include "node.h"
 
+
 typedef struct {
 	unsigned char type;	//join, leave, etc
 }msgheader;
@@ -14,7 +15,7 @@ typedef struct {
 
 
 typedef struct {
-	msgheader* h;
+	msgheader h;
 	SockAddr srcAddr;
 	Id srcId;
 	SockAddr fwdAddr;

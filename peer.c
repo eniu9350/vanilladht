@@ -1,17 +1,27 @@
 #include <stdlib.h>
 
 #include "peer.h"
+#include "sockwrap.h"
 
 void getBootstrapNodeIp(SockAddr* bootIp)
 {
-		ipaddr_set(bootIp, 192, 168, 8, 1);
+		ipaddr_set(bootIp, 192, 168, 70, 136, 7001);
 }
+
+void boot(Node* n)
+{
+		//get bootstrap node address
+		SockAddr bootAddr;
+		getBootstrapNodeIp(&bootAddr);
+
+		//connect and save socket fd
+		//n->bsSfd = sw_conn(bootAddr);
+		n->bootAddr = bootAddr;
+}
+
 
 void join(Node* n)
 {
-		//get bootstrap node address
-		SockAddr bootIp;
-		getBootstrapNodeIp(&bootIp);
 
 		//send join msg to bootstrap node
 		msgheader* h = (msgheader*)malloc(sizeof(msgheader));
@@ -20,10 +30,10 @@ void join(Node* n)
 		//h->srcId = n->id;
 
 		msg_join_req m;
-		m.h = h;
+		m.h = *h;
 		m.fwdId = n->id;
 		m.fwdAddr = n->addr;
-		send_join_req(n, &m, &bootIp);	//mmm:right? temp var?
+		send_join_req(n, &m, &n->bootAddr);	//mmm:right? temp var?
 }
 
 void leave(Node* n)
@@ -35,9 +45,12 @@ void leave(Node* n)
 }
 
 //send messages
-void send_join_req(Node* n, msg_join_req* m, SockAddr* ip)
+void send_join_req(Node* n, msg_join_req* m, SockAddr* addr)
 {
-
+	int sockfd;
+	sockfd = sw_conn(addr);
+	sw_send(sockfd, (char*)m, sizeof(msg_join_req));
+	
 }
 
 //send messages
