@@ -1,20 +1,12 @@
 #include "../peer.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 
-	Node n;
-	SockAddr sa;
-	sa.ip.a = 192;
-	sa.ip.b = 168;
-	sa.ip.c = 70;
-	sa.ip.d = 140;
-	sa.port = 8001;
+	localnode* ln;
+	
+	ln = createlocalnode(192, 168, 70, 140, 192, 168, 70, 140);
 
-	n.addr = sa;
-
-	printf("server before boot\n");
-
-	boot(&n);
+	boot(ln);
 }
 

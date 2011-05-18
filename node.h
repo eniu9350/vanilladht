@@ -4,6 +4,10 @@
 
 #include "ip.h"
 
+
+#define NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_PEER 9350
+#define NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_UPPER 10350
+
 typedef int Id;
 
 
@@ -18,5 +22,7 @@ typedef struct	{
 	SockAddr bootAddr;
 	//int bsSfd;	//bootstrap socket fd
 	
-}Node;
+	int port_upper;
+	
+}localnode;
 #endif

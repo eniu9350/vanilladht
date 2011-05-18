@@ -3,38 +3,71 @@
 #include "peer.h"
 #include "sockwrap.h"
 
-void getBootstrapNodeIp(SockAddr* bootIp)
+
+//-------------------- api --------
+localnode* createlocalnode(int ipa, int ipb, int ipc, int ipd, int bipa, int bipb, int bipc, int bipd)
 {
-				ipaddr_set(bootIp, 192, 168, 70, 140, 8001);
+				localnode* ln = (localnode*)malloc(sizeof(localnode));
+
+				SockAddr saself;
+				saself.ip.a = ipa;
+				saself.ip.b = ipb;
+				saself.ip.c = ipc;
+				saself.ip.d = ipd;
+				//saself.port = port;
+
+				//set bootstrap ip
+				SockAddr saboot;
+				saboot.ip.a = bipa;
+				saboot.ip.b = bipb;
+				saboot.ip.c = bipc;
+				saboot.ip.d = bipd;
+				//saboot.port = bport;
+
+				ln->addr = saself;
+				ln->bootAddr = saboot;
+
+				return ln;
 }
 
-void boot(Node* n)
+
+void boot(localnode* n)
 {
-				//listen for connections
 				printf("1\n");
-				printf("2\n");
+				//SockAddr bootAddr;	//addr of bootstrap node
+				SockAddr thisaddr_upper;	//addr of this node for upper layer access
+
+				//listen for connections
+				n->addr.port = NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_PEER;
+				n->bootAddr.port = NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_PEER;
+				n->port_upper = NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_UPPER;
 
 				//get bootstrap node address
-				SockAddr bootAddr;
-				getBootstrapNodeIp(&bootAddr);
-				if(ipaddr_cmp(&bootAddr.ip, &n->addr.ip)==1 && bootAddr.port == n->addr.port)	{
+				//getBootstraplocalnodeIp(&bootAddr);
+				if(ipaddr_cmp(&(n->bootAddr.ip), &n->addr.ip)==1 && n->bootAddr.port == n->addr.port)	{
 								printf("cmp true, boot = this\n");
-				sw_listen(&n->addr);
-								;
+								//listen on peer port
+								sw_listen(&n->addr);
+
+								thisaddr_upper = n->addr;
+								thisaddr_upper.port = n->port_upper;
+								//listen on upper port
+								sw_listen(&thisaddr_upper);
 				}
 				else	{
 								//connect and save socket fd
 								//n->bsSfd = sw_conn(bootAddr);
-				//sw_listen(&n->addr);	//mmm:uncomment it! 
-								n->bootAddr = bootAddr;
+								//sw_listen(&n->addr);	//mmm:uncomment it! 
+								//n->bootAddr = bootAddr;
 
 								printf("before join\n");
 								join(n);
 				}
+
 }
 
 
-void join(Node* n)
+void join(localnode* n)
 {
 
 				//send join msg to bootstrap node
@@ -52,7 +85,7 @@ void join(Node* n)
 				send_join_req(n, &m, &n->bootAddr);	//mmm:right? temp var?
 }
 
-void leave(Node* n)
+void leave(localnode* n)
 {
 				msg_leave_req m;
 				m.srcId = n->id;
@@ -61,7 +94,7 @@ void leave(Node* n)
 }
 
 //send messages
-void send_join_req(Node* n, msg_join_req* m, SockAddr* addr)
+void send_join_req(localnode* n, msg_join_req* m, SockAddr* addr)
 {
 				int sockfd;
 				sockfd = sw_conn(addr);
@@ -70,39 +103,39 @@ void send_join_req(Node* n, msg_join_req* m, SockAddr* addr)
 }
 
 //send messages
-void fwd_join_req(Node* n, msg_join_req* m, SockAddr* ip)
+void fwd_join_req(localnode* n, msg_join_req* m, SockAddr* ip)
 {
-;
+				;
 
 }
 
 //send messages
-void send_join_resp(Node* n, msg_join_resp* m, SockAddr* ip)
+void send_join_resp(localnode* n, msg_join_resp* m, SockAddr* ip)
 {
-;
+				;
 
 }
 
 //send messages
-void send_leave_req(Node* n, msg_leave_req* m, SockAddr* ip)
-{
-
-}
-
-//send messages
-void fwd_leave_req(Node* n, msg_leave_req* m, SockAddr* ip)
+void send_leave_req(localnode* n, msg_leave_req* m, SockAddr* ip)
 {
 
 }
 
 //send messages
-void send_leave_resp(Node* n, msg_leave_resp* m, SockAddr* ip)
+void fwd_leave_req(localnode* n, msg_leave_req* m, SockAddr* ip)
+{
+
+}
+
+//send messages
+void send_leave_resp(localnode* n, msg_leave_resp* m, SockAddr* ip)
 {
 
 }
 
 //on receiving messages
-void on_receive_join_resp(Node* n, msg_join_resp* m)
+void on_receive_join_resp(localnode* n, msg_join_resp* m)
 {
 				//get join response
 				/* if destId not id */
@@ -112,7 +145,7 @@ void on_receive_join_resp(Node* n, msg_join_resp* m)
 				//update successor
 }
 
-void on_receive_join_req(Node* n, msg_join_req* m)
+void on_receive_join_req(localnode* n, msg_join_req* m)
 {
 				msgheader* _h;
 				msg_join_resp* _m;
@@ -154,7 +187,7 @@ void on_receive_join_req(Node* n, msg_join_req* m)
 				}
 }
 
-void on_receive_leave_req(Node* n, msg_leave_req* m)
+void on_receive_leave_req(localnode* n, msg_leave_req* m)
 {
 				msg_leave_resp* _m;
 				msgheader* _h = (msgheader*)malloc(sizeof(msgheader));	
@@ -175,7 +208,7 @@ void on_receive_leave_req(Node* n, msg_leave_req* m)
 				}
 }
 
-void on_receive_leave_resp(Node* n, msg_leave_resp* m)
+void on_receive_leave_resp(localnode* n, msg_leave_resp* m)
 {
 				//validate src(may it be its pred's pred?)
 				//can't validate!!

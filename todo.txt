@@ -4,4 +4,6 @@
 //tips: this was to realize common func in separate message, like chord's implementation of "find successor"
 
 
-* implementation of send() and receive()
+[90%]* implementation of send() and receive()
+
+* implement service exposed to the upper layer

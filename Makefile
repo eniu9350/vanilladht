@@ -8,7 +8,7 @@ testsrv:
 	gcc ip.c msg.c peer.c sockwrap.c node.c test/server.c -o server
 
 clean:
-	rm *.o
+	rm *.o client server
 
 #------------ git ops ------------#
 commit:
