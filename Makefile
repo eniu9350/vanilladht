@@ -1,15 +1,14 @@
 all:
 	g++ -c ip.c msg.c peer.c sockwrap.c node.c
 
-clean:
-	rm *.o
-
+testcli:
+	gcc ip.c msg.c peer.c sockwrap.c node.c test/client.c -o client
 
 testsrv:
 	gcc ip.c msg.c peer.c sockwrap.c node.c test/server.c -o server
 
-testsrv:
-	gcc ip.c msg.c peer.c sockwrap.c node.c test/client.c -o client
+clean:
+	rm *.o
 
 #------------ git ops ------------#
 commit:

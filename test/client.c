@@ -1,8 +1,7 @@
 #include "../peer.h"
 
 int main()
-{
-
+{ 
 	printf("client\n");
 	Node n;
 	SockAddr sa;
@@ -12,6 +11,7 @@ int main()
 	sa.ip.d = 140;
 	sa.port = 7002;
 
+	n.id = 5;
 	n.addr = sa;
 
 	printf("client before boot\n");

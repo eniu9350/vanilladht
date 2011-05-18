@@ -9,7 +9,7 @@ int main()
 	sa.ip.b = 168;
 	sa.ip.c = 70;
 	sa.ip.d = 140;
-	sa.port = 7001;
+	sa.port = 8001;
 
 	n.addr = sa;
 

@@ -5,7 +5,7 @@
 
 void getBootstrapNodeIp(SockAddr* bootIp)
 {
-				ipaddr_set(bootIp, 192, 168, 70, 140, 7001);
+				ipaddr_set(bootIp, 192, 168, 70, 140, 8001);
 }
 
 void boot(Node* n)
@@ -45,6 +45,8 @@ void join(Node* n)
 
 				msg_join_req m;
 				m.h = *h;
+				m.srcId = n->id;
+				m.srcAddr = n->addr;
 				m.fwdId = n->id;
 				m.fwdAddr = n->addr;
 				send_join_req(n, &m, &n->bootAddr);	//mmm:right? temp var?

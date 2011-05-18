@@ -21,6 +21,7 @@ int sw_listen(SockAddr* sa)
 				char* buffer;
 				int nread;
 				msg_join_req m;
+				int el;
 
 				initsock = socket(AF_INET, SOCK_STREAM, 0);
 				if(initsock < 0) 	{
@@ -28,19 +29,19 @@ int sw_listen(SockAddr* sa)
 				}
 
 				//bind
-				printf("bind\n");
+				printf("bind, port = %d \n", sa->port);
 				bzero((char*)&srvaddr, sizeof(srvaddr));
 				srvaddr.sin_family = AF_INET;
 				srvaddr.sin_addr.s_addr = INADDR_ANY;
-				srvaddr.sin_port = sa->port;
+				srvaddr.sin_port = htons(sa->port);	//mmm: wrong if no "htons"!!!!!
 				if(bind(initsock, (struct sockaddr*)&srvaddr, sizeof(srvaddr)) < 0) {
 								printf("sw_listen bind error\n");
 				}
 
 				//listen
 				printf("listen\n");
-				listen(initsock, 5);
-				printf("listening...\n");
+				el = listen(initsock, 5);
+				printf("listening..., return value=%d\n", el);
 
 				//accept
 				buffer = (char*)malloc(1024);
@@ -86,7 +87,8 @@ int sw_conn(SockAddr* sa)
 				e = connect(sockfd, (struct sockaddr*)&srvaddr, sizeof(srvaddr));
 
 				if(e<0)	{
-								printf("sockwrap error\n");
+//								printf("sockwrap error: %d\n", e);
+								perror("sockwrap error");
 								//generate error!!!
 				}
 				return sockfd;	//must be valid!
