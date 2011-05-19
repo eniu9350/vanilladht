@@ -5,7 +5,7 @@
 
 
 typedef struct {
-	unsigned char type;	//join, leave, etc
+				unsigned char type;	//join, leave, etc
 }msgheader;
 
 #define MT_JOINREQ 0;
@@ -13,31 +13,39 @@ typedef struct {
 #define MT_LEAVEREQ 2;
 
 
-
 typedef struct {
-	msgheader h;
-	SockAddr srcAddr;
-	Id srcId;
-	SockAddr fwdAddr;
-	Id fwdId;
+				msgheader h;
+				SockAddr srcAddr;
+				hashvalue srcId;
+				SockAddr fwdAddr;
+				hashvalue fwdId;
 }msg_join_req;
 
 typedef struct {
-	msgheader* h;
-	SockAddr succAddr;
-	Id succId;
+				msgheader h;
+				SockAddr succAddr;
+				hashvalue succId;
 }msg_join_resp;
 
 typedef struct {
-		msgheader* h;
-		SockAddr srcAddr;
-		Id srcId;
+				msgheader h;
+				SockAddr srcAddr;
+				hashvalue srcId;
 }msg_leave_req;
 
 typedef struct {
-		msgheader* h;
-		SockAddr srcAddr;
-		Id srcId;
+				msgheader h;
+				SockAddr srcAddr;
+				hashvalue srcId;
 }msg_leave_resp;
+
+typedef struct {
+				msgheader h;
+				hashvalue key;
+				char body[100];
+}msg_route;
+
+
+
 
 #endif

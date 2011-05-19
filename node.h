@@ -8,7 +8,7 @@
 #define NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_PEER 9350
 #define NODELOCAL_DEFAULT_PORT_ROUTING_LAYER_UPPER 10350
 
-typedef int Id;
+typedef int hashvalue;
 
 
 /* dht peer on this machine*/

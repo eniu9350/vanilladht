@@ -3,8 +3,7 @@
 #include "peer.h"
 #include "sockwrap.h"
 
-
-//-------------------- api --------
+/* ------------------------- api ------------------------- */
 localnode* createlocalnode(int ipa, int ipb, int ipc, int ipd, int bipa, int bipb, int bipc, int bipd)
 {
 				localnode* ln = (localnode*)malloc(sizeof(localnode));
@@ -93,7 +92,7 @@ void leave(localnode* n)
 				send_leave_req(n, &m, &n->succAddr);
 }
 
-//send messages
+/* ------------------------- message sending utilities ------------------------- */
 void send_join_req(localnode* n, msg_join_req* m, SockAddr* addr)
 {
 				int sockfd;
@@ -102,14 +101,12 @@ void send_join_req(localnode* n, msg_join_req* m, SockAddr* addr)
 
 }
 
-//send messages
 void fwd_join_req(localnode* n, msg_join_req* m, SockAddr* ip)
 {
 				;
 
 }
 
-//send messages
 void send_join_resp(localnode* n, msg_join_resp* m, SockAddr* ip)
 {
 				;
@@ -134,7 +131,7 @@ void send_leave_resp(localnode* n, msg_leave_resp* m, SockAddr* ip)
 
 }
 
-//on receiving messages
+/* ------------------------- message handling ------------------------- */
 void on_receive_join_resp(localnode* n, msg_join_resp* m)
 {
 				//get join response
