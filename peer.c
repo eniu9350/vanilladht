@@ -195,7 +195,7 @@ void on_receive_leave_req(localnode* n, msg_leave_req* m)
 
 								//send leave message
 								_m = (msg_leave_resp*)malloc(sizeof(msg_leave_resp));
-								_m->h = _h;
+								_m->h = *_h;
 								_m->srcId = n->id;
 								_m->srcAddr = n->addr;
 								send_leave_resp(n, _m, &m->srcAddr);

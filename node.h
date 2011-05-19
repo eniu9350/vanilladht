@@ -14,10 +14,10 @@ typedef int hashvalue;
 /* dht peer on this machine*/
 typedef struct	{
 	SockAddr addr;
-	Id id;
+	hashvalue id;
 
 	SockAddr succAddr;
-	Id succId;
+	hashvalue succId;
 
 	SockAddr bootAddr;
 	//int bsSfd;	//bootstrap socket fd
